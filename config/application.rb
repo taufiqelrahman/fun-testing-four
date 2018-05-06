@@ -5,6 +5,10 @@ require 'rails/all'
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
+ignore_dotenv = ENV['IGNORE_DOTENV']
+if ignore_dotenv.nil? || ignore_dotenv.empty? || ignore_dotenv == '0'
+  require 'dotenv/rails'
+end
 
 module Testhackton
   class Application < Rails::Application
