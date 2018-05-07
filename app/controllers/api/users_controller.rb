@@ -25,19 +25,10 @@ class Api::UsersController < ApiController
     head :no_content
   end
 
-  def destroy
-    current_user.destroy
-    head :no_content
-  end
-
   private
 
   def user_params
     user_params = params.permit :username, :email, :password
-  end
-
-  def set_user
-    @user = User.find(params[:id])
   end
 
 end
