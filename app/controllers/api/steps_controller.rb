@@ -1,3 +1,4 @@
+# not used
 class Api::StepsController < ApiController
   def create
     step = Step.new

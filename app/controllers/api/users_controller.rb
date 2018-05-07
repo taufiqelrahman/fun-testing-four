@@ -22,7 +22,7 @@ class Api::UsersController < ApiController
 
   def update
     current_user.update(user_params)
-    json_response(current_user, status: :no_content)
+    json_response(current_user, status: :updated)
   end
 
   private

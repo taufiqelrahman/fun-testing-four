@@ -11,6 +11,6 @@ Rails.application.routes.draw do
     end
     resources :users, except: [:destroy]
     resources :steps, only: [:create]
-    resources :scenarios, only: [:create, :update]
+    resources :scenarios
   end
 end
