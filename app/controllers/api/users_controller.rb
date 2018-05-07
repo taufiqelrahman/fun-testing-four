@@ -1,13 +1,18 @@
 class Api::UsersController < ApiController
   skip_before_action :authenticate_request, only: [:create]
 
+  def me
+    json_response(current_user)
+  end
+
   def index
     users = User.all
     json_response(users)
   end
 
   def show
-    json_response(current_user)
+    user = User.find(params[:id])
+    json_response(user)
   end
 
   def create
@@ -15,7 +20,7 @@ class Api::UsersController < ApiController
     json_response(@todo, :created)
   end
 
-   def update
+  def update
     current_user.update(user_params)
     head :no_content
   end

@@ -5,7 +5,8 @@ class Api::AuthenticationController < ApiController
     token = UserService.authenticate(params[:email], params[:password])
 
     if token
-      render json: { auth_token: token }
+      current_user = User.find_by(email: params[:email])
+      render json: { user: current_user.serializable_hash, authentication_token: token }
     else
       render json: { error: 'invalid credentials' }, status: :unauthorized
     end

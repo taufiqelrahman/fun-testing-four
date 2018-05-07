@@ -1,8 +1,7 @@
 Rails.application.routes.draw do
-  scope module: 'api' do
+  scope '/api', module: 'api' do
     post :authenticate, to: 'authentication#authenticate', as: 'authenticate'
-
-    resources :users do
-    end
+    get :me, to: 'users#me', as: 'users_me'
+    resources :users, except: [:destroy]
   end
 end
