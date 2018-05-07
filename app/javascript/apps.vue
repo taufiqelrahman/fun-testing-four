@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import { mapActions	} from 'vuex'
 import Navbar from 'components/Navbar'
 export default {
   name: 'App',
@@ -23,7 +22,7 @@ export default {
     ]),
   },
   beforeMount() {
-    if (this.$store.state.ui.isLoggedIn) this.getUser()
+    if (this.$store.state.ui.isLoggedIn) this.$store.dispatch('getUser')
   }
 }
 </script>
