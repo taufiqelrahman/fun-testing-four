@@ -5,6 +5,8 @@ class CreateSquads < ActiveRecord::Migration[5.2]
       t.text    :description
 
       t.timestamps
+      t.datetime :deleted_at
     end
+    add_index :squads, :deleted_at
   end
 end

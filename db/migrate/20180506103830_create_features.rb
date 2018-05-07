@@ -5,6 +5,8 @@ class CreateFeatures < ActiveRecord::Migration[5.2]
       t.integer :squad_id
 
       t.timestamps
+      t.datetime :deleted_at
     end
+    add_index :features, :deleted_at
   end
 end

@@ -7,6 +7,8 @@ class CreateScenarios < ActiveRecord::Migration[5.2]
       t.integer :user_id
 
       t.timestamps
+      t.datetime :deleted_at
     end
+    add_index :scenarios, :deleted_at
   end
 end
