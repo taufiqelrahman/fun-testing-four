@@ -6,9 +6,10 @@ class Api::AuthenticationController < ApiController
 
     if token
       current_user = User.find_by(email: params[:email])
-      render json: { user: current_user.serializable_hash, authentication_token: token }
+      current_user_hash = current_user.serializable_hash
+      render json: { user: current_user_hash, authentication_token: token }
     else
       render json: { error: 'invalid credentials' }, status: :unauthorized
     end
- end
+  end
 end
