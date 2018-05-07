@@ -3,10 +3,13 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import VeeValidate from 'vee-validate'
 import VueRouter from 'vue-router'
+import VueChartkick from 'vue-chartkick'
+import Chart from 'chart.js'
 import App from 'App'
 import router from 'router'
 import store from 'store'
 
+Vue.use(VueChartkick, { adapter: Chart })
 Vue.use(VueRouter)
 Vue.use(Vuex)
 Vue.use(VeeValidate)

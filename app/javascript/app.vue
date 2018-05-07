@@ -1,7 +1,11 @@
 <template>
-  <div id="app">
+  <div id="app" class="font-sans">
     <navbar />
-    <router-view></router-view>
+    <div class="bg-grey-app-bg">
+      <div class="container mx-auto py-8 text-grey-darkest pt-22">
+        <router-view></router-view>
+      </div>
+    </div>
   </div>
 </template>
 

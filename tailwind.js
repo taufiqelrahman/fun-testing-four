@@ -44,6 +44,7 @@ View the full documentation at https://tailwindcss.com.
 */
 
 let colors = {
+  'grey-app-bg': 'F7F8F9',
   'transparent': 'transparent',
 
   'black': '#22292f',
@@ -649,6 +650,7 @@ module.exports = {
     '4': '1rem',
     '6': '1.5rem',
     '8': '2rem',
+    '22': '6.5rem',
   },
 
 
