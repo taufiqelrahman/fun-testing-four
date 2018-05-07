@@ -1,5 +1,5 @@
 {
-  "name": "testhackton",
+  "name": "fun-testing-four",
   "private": true,
   "dependencies": {
     "@rails/webpacker": "3.5",

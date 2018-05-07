@@ -1,15 +1,13 @@
-class UsersController < ApplicationController
+class Api::UsersController < ApiController
+  skip_before_action :authenticate_request, only: [:create]
 
-  before_action :set_user, only: [:show, :update, :destroy]
-    
   def index
     users = User.all
     json_response(users)
   end
 
   def show
-    user = User.find(params[:id])
-    json_response(user)
+    json_response(current_user)
   end
 
   def create
@@ -18,12 +16,12 @@ class UsersController < ApplicationController
   end
 
    def update
-    @user.update(user_params)
+    current_user.update(user_params)
     head :no_content
   end
 
   def destroy
-    @user.destroy
+    current_user.destroy
     head :no_content
   end
 
@@ -36,5 +34,5 @@ class UsersController < ApplicationController
   def set_user
     @user = User.find(params[:id])
   end
-  
+
 end
