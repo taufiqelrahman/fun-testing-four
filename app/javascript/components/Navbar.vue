@@ -83,7 +83,10 @@ export default {
       this.$router.push(path)
     },
     isActive(path) {
-      return this.$route.path === path
+      if (path === '/') {
+        return this.$route.path === path
+      }
+      return this.$route.path === path || this.$route.path.includes(path.toLowerCase())
     },
     toggleUserMenu() {
       this.showUserMenu = !this.showUserMenu
