@@ -14,6 +14,30 @@ Vue.use(VueRouter)
 Vue.use(Vuex)
 Vue.use(VeeValidate)
 
+router.beforeEach((to, from, next) => {
+  const isLoggedIn = store.state.ui.isLoggedIn
+  const loginPaths = ['Login']
+
+  if (isLoggedIn) {
+    if (loginPaths.indexOf(to.name) !== -1) {
+      next('/')
+      return
+    }
+    next()
+  }
+  else {
+    if (loginPaths.indexOf(to.name) === -1) {
+      // if (to.name === 'Login') {
+      //   next()
+      //   return
+      // }
+      next('/login')
+      return
+    }
+    next()
+  }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   var app = new Vue({
     el: '#app',

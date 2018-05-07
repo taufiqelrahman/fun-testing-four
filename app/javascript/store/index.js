@@ -7,8 +7,10 @@ import {
 import { 
 } from './getters'
 import { 
+  uiMutations,
 } from './mutations'
 import { 
+  uiActions,
 } from './actions'
 
 Vue.use(Vuex)
@@ -20,6 +22,10 @@ export default new Vuex.Store({
     user, 
   }),
   getters: {},
-  mutations: {},
-  actions: {}
+  mutations: Object.assign({},
+    uiMutations,
+  ),
+  actions: Object.assign({},
+    uiActions,
+  ),
 })

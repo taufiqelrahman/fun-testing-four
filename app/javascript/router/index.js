@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 // import PathNotFound from '@/pages/PathNotFound'
+import Login from 'pages/Login'
 import Overview from 'pages/Overview'
 import Results from 'pages/Results'
 import Cases from 'pages/Cases'
@@ -14,6 +15,11 @@ export default new Router({
       path: '/',
       name: 'Overview',
       component: Overview,
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login,
     },
     {
       path: '/results',
