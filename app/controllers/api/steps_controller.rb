@@ -6,7 +6,7 @@ class Api::StepsController < ApiController
     step.user_id = current_user.id
     step.scenarios << Scenario.find(params[:scenario_id])
     step.save!
-    json_response(step, :created)
+    json_response(step, status: :created)
   end
-  
+
 end
