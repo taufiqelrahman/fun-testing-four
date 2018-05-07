@@ -16,7 +16,7 @@ module Response
     end
     meta = meta.with_indifferent_access
     meta.merge!(code: 200) unless meta[:status]
-    if data.blank?
+    if data.nil?
       meta.merge!(code: 404)
       meta[:status] = 'not found'
     end
