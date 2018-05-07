@@ -3,5 +3,6 @@ Rails.application.routes.draw do
     post :authenticate, to: 'authentication#authenticate', as: 'authenticate'
     get :me, to: 'users#me', as: 'users_me'
     resources :users, except: [:destroy]
+    resources :steps, only: [:create]
   end
 end
