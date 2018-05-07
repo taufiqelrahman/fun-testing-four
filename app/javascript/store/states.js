@@ -15,3 +15,8 @@ export const user = {
   info: {},
   access_token: getFromStorage('access_token'),
 }
+
+export const data = {
+  squads: null,
+  features: [],
+}

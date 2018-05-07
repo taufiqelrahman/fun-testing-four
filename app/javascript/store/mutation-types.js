@@ -6,3 +6,5 @@ export const LOG_IN = 'LOG_IN'
 
 export const SET_TOKEN = 'SET_TOKEN'
 export const SET_USER = 'SET_USER'
+
+export const SET_DATA = 'SET_DATA'

@@ -52,4 +52,5 @@ export function setToStorage(name, value) {
 export const URL = {
   login: '/api/authenticate',
   user: '/api/me',
+  squads: '/api/squads',
 }

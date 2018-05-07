@@ -7,6 +7,7 @@ import {
 	TOGGLE_TOAST,
 	SET_TOKEN,
 	SET_USER,
+	SET_DATA,
 } from './mutation-types'
 
 export const uiMutations = {
@@ -35,5 +36,11 @@ export const userMutations = {
 	},
 	[SET_USER](state, payload) {
 		state.user.info = payload
+	},
+}
+
+export const dataMutations = {
+	[SET_DATA](state, payload) {
+		state.data[payload.type] = payload.data
 	},
 }

@@ -11,6 +11,7 @@ import {
 	LOG_IN,
 	SET_TOKEN,
 	SET_USER,
+	SET_DATA,
 } from './mutation-types.js'
 
 export const uiActions = {
@@ -57,4 +58,30 @@ export const userActions = {
 				commit(TOGGLE_ALERT, { show: true, message: err.response.data.message })
 			})
 	},
+}
+
+export const dataActions = {
+	getSquads({ commit }) {
+		axios.get(URL.squads, axiosConfigAuth())
+			.then(res => {
+				commit(SET_DATA, { type: 'squads', data: res.data.data })
+				// 	commit(TOGGLE_SPINNER, false)
+			})
+			.catch(err => {
+				commit(TOGGLE_SPINNER, false)
+				commit(TOGGLE_ALERT, { show: true, message: err.response.data.message })
+			})
+	},
+	getFeatures({ commit }, payload) {
+		const endpoint = `${URL.squads}/${payload}/features`
+		axios.get(endpoint, axiosConfigAuth())
+			.then(res => {
+				commit(SET_DATA, { type: 'features', data: res.data.data })
+				// 	commit(TOGGLE_SPINNER, false)
+			})
+			.catch(err => {
+				commit(TOGGLE_SPINNER, false)
+				commit(TOGGLE_ALERT, { show: true, message: err.response.data.message })
+			})
+	}
 }
