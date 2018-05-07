@@ -11,9 +11,13 @@
 # It's strongly recommended that you check this file into your version control system.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 0) do
 =======
 ActiveRecord::Schema.define(version: 2018_05_06_123117) do
+=======
+ActiveRecord::Schema.define(version: 2018_05_07_105915) do
+>>>>>>> f57540e0a1f812b6a297591f3e7466d2e4e17654
 
   create_table "features", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
@@ -39,7 +43,7 @@ ActiveRecord::Schema.define(version: 2018_05_06_123117) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "screnarios_steps", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "scenarios_steps", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "scenario_id"
     t.integer "step_id"
     t.boolean "active"
@@ -62,5 +66,13 @@ ActiveRecord::Schema.define(version: 2018_05_06_123117) do
     t.datetime "updated_at", null: false
   end
 >>>>>>> 2b32ecc5c1070aff5a40f7d7dfe0311192917c67
+
+  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "username"
+    t.string "email"
+    t.string "password_digest"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
 end
