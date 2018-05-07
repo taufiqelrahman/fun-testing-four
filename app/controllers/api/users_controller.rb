@@ -17,7 +17,7 @@ class Api::UsersController < ApiController
 
   def create
     @user = User.create!(user_params)
-    json_response(@user, :created)
+    json_response(@user, status: :created)
   end
 
   def update
