@@ -33,7 +33,7 @@ class Api::UsersController < ApiController
   private
 
   def user_params
-    user_params = params[:user].permit :username, :email, :password
+    user_params = params.permit :username, :email, :password
   end
 
   def set_user
