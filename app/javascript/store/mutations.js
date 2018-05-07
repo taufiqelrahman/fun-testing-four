@@ -5,6 +5,8 @@ import {
 	TOGGLE_ALERT,
 	TOGGLE_SPINNER,
 	TOGGLE_TOAST,
+	SET_TOKEN,
+	SET_USER,
 } from './mutation-types'
 
 export const uiMutations = {
@@ -24,5 +26,14 @@ export const uiMutations = {
 	},
 	[LOG_IN](state) {
 		state.ui.isLoggedIn = true
+	},
+}
+
+export const userMutations = {
+	[SET_TOKEN](state, payload) {
+		state.user.access_token = payload
+	},
+	[SET_USER](state, payload) {
+		state.user.info = payload
 	},
 }

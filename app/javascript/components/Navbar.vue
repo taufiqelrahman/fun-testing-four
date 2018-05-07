@@ -21,7 +21,7 @@
         class="flex items-center cursor-pointer relative px-4 h-16"
         @click="toggleUserMenu"
         v-on-clickaway="hideUserMenu">
-        <div>Hello, <span class="text-blue-dark">John</span></div>
+        <div>Hello, <span class="text-blue-dark">{{ username }}</span></div>
         <img :src="avatar" alt="avatar" class="rounded-full h-10 ml-4" />
         <div
           v-if="showUserMenu"
@@ -73,6 +73,9 @@ export default {
   computed: {
     isLoggedIn() {
       return this.$store.state.ui.isLoggedIn
+    },
+    username() {
+      return this.$store.state.user.info.username
     },
   },
   methods: {

@@ -8,7 +8,7 @@ export function goBack() {
 export function axiosConfig() {
   return {
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      'Content-Type': 'application/json'
     }
   }
 }
@@ -16,7 +16,7 @@ export function axiosConfig() {
 export function axiosConfigAuth() {
   return {
     headers: {
-      'Authorization': 'Bearer ' + store.state.user.access_token
+      'Authorization': store.state.user.access_token
     }
   }
 }
@@ -50,4 +50,6 @@ export function setToStorage(name, value) {
 }
 
 export const URL = {
+  login: '/api/authenticate',
+  user: '/api/me',
 }
