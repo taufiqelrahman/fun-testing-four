@@ -25,7 +25,7 @@ class Report::Scenario < ApplicationRecord
   def update_report_feature
     if passed?
       other_report_scenarios = ::Report::Scenario.where(report_feature_id: self.report_feature_id).where.not(id: self.id).to_a
-      all_success = other_report_scenarios.all?(&:successed?)
+      all_success = other_report_scenarios.all?(&:passed?)
       ReportService.update_report_feature(self.report_feature, {state: 'passed'}) if all_success
     elsif failed?
       ReportService.update_report_feature(self.report_feature, {state: 'failed'})
