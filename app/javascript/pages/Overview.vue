@@ -74,8 +74,8 @@ export default {
       return this.$store.state.data.summaries
     },
     // noSummaries() {
-
-    // }
+    //   return Object.values(this.summaries).filter(x => x === 0).length === 4
+    // },
   },
   methods: {
     navigate(path) {

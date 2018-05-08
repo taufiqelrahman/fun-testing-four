@@ -201,9 +201,10 @@ export const dataActions = {
 		return new Promise((resolve, reject) => {
 			axios.post(endpoint, {}, axiosConfigAuth())
 				.then(res => {
+					const id = res.data.data.id
 					dispatch('getFeatureReport', res.data.data.id)
 						.then(res => {
-							if (res) resolve(res.data.data.id)
+							if (res) resolve(id)
 						})
 					// commit(TOGGLE_SPINNER, false)
 				})
@@ -267,6 +268,21 @@ export const dataActions = {
 			axios.get(endpoint, axiosConfigAuth())
 				.then(res => {
 					commit(SET_DATA, { type: 'summaries', data: res.data.data })
+					// commit(TOGGLE_SPINNER, false)
+					resolve(true)
+				})
+				.catch(err => {
+					commit(TOGGLE_SPINNER, false)
+					commit(TOGGLE_ALERT, { show: true, message: err.response.data.message })
+				})
+		})
+	},
+	getFeatureFromReport({ commit }, payload) {
+		const endpoint = URL.featureFromReport.replace('[ID]', payload)
+		return new Promise((resolve, reject) => {
+			axios.get(endpoint, axiosConfigAuth())
+				.then(res => {
+					commit(SET_DATA, { type: 'feature', data: res.data.data })
 					// commit(TOGGLE_SPINNER, false)
 					resolve(true)
 				})

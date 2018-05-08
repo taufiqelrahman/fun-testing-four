@@ -3,7 +3,7 @@
     <div class="w-1/2 px-4">
       <panel class="mt-4">
         <template slot="header">
-          <div class="font-semibold">Test Case Execution - {{ test.title }}</div>
+          <div v-if="feature" class="font-semibold text-capitalize">Test Case Execution - {{ feature.feature.title }}</div>
         </template>
         <div class="px-6 py-4">
           <div class="mb-4">
@@ -12,17 +12,22 @@
               height="180px"
               :colors="['#38c172', '#e3342f', '#b8c2cc']"></pie-chart>
           </div>
-          <template v-for="item in scenarios">
-            <div
-              :key="item.id"
-              :class="{'bg-blue-lighter': selectedScenario && item.id === selectedScenario.id}"
-              class="flex justify-between py-2 items-center hover:bg-blue-lightest px-4 cursor-pointer"
-              @click="selectTest(item)"
-              >
-              <div>{{ item.scenario.title }}</div>
-              <tag :type="item.state" />
-            </div>
-          </template>
+          <div v-if="scenarios.length > 0">
+            <template v-for="item in scenarios">
+              <div
+                :key="item.id"
+                :class="{'bg-blue-lighter': selectedScenario && item.id === selectedScenario.id}"
+                class="flex justify-between py-2 items-center hover:bg-blue-lightest px-4 cursor-pointer"
+                @click="selectTest(item)"
+                >
+                <div>{{ item.scenario.title }}</div>
+                <tag :type="item.state" />
+              </div>
+            </template>
+          </div>
+          <div v-else>
+            No scenarios yet
+          </div>
         </div>
       </panel>
     </div>
@@ -100,26 +105,26 @@ export default {
   },
   data() {
     return {
-      test: {
-        title: 'Wew',
-        scenarios: [
-          {
-            id: 0,
-            name: 'Scenario 1',
-            status: 0,
-          },
-          {
-            id: 1,
-            name: 'Scenario 2',
-            status: 1,
-          },
-          {
-            id: 2,
-            name: 'Scenario 3',
-            status: 2,
-          },
-        ]
-      },
+      // test: {
+      //   title: 'Wew',
+      //   scenarios: [
+      //     {
+      //       id: 0,
+      //       name: 'Scenario 1',
+      //       status: 0,
+      //     },
+      //     {
+      //       id: 1,
+      //       name: 'Scenario 2',
+      //       status: 1,
+      //     },
+      //     {
+      //       id: 2,
+      //       name: 'Scenario 3',
+      //       status: 2,
+      //     },
+      //   ]
+      // },
       scenarioId: null,
       remark: null,
       assign: null,
@@ -163,6 +168,9 @@ export default {
     steps() {
       return this.$store.state.data.steps
     },
+    feature() {
+      return this.$store.state.data.feature
+    },
   },
   methods: {
     selectTest(item) {
@@ -183,6 +191,9 @@ export default {
   },
   beforeMount() {
     this.$store.dispatch('getFeatureReport', this.id)
+  },
+  mounted() {
+    this.$store.dispatch('getFeatureFromReport', this.id)
   }
 }
 </script>

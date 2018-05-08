@@ -23,4 +23,5 @@ export const data = {
   scenarioReport: [],
   steps: [],
   summaries: null,
+  feature: null,
 }
