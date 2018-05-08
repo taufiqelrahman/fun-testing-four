@@ -1,9 +1,13 @@
 class Api::ScenariosController < ApiController
+  # POST /scenarios params title, available_on, description, feature_id, steps[]
   def create
     scenario = Scenario.create!(scenario_params.merge(user_id: current_user.id))
+    feature = Feature.find(params[:feature_id])
+    scenario.features << feature
     json_response(step_builder(scenario), status: :created)
   end
 
+  # PUT /scenarios/:id params title, available_on, description, steps[]
   def update
     scenario = Scenario.find(params[:id])
     scenario.update(scenario_params)
@@ -11,6 +15,7 @@ class Api::ScenariosController < ApiController
     json_response(step_builder(scenario), status: :updated)
   end
 
+  # DELETE /scenarios:id
   def destroy
     scenario = Scenario.find(params[:id])
     scenario.delete
@@ -18,6 +23,10 @@ class Api::ScenariosController < ApiController
   end
 
   private
+
+  def scenario_params
+    params.permit :title, :available_on, :description
+  end
 
   def step_builder(scenario)
     if params['steps']
