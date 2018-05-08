@@ -58,6 +58,7 @@ export default {
             this.$emit('toggleForm')
           }
         })
+        return
       }
       this.$store.dispatch('createFeature', {
           title: this.title,
