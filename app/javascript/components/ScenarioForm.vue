@@ -82,6 +82,7 @@ export default {
             this.$store.dispatch('getScenarios', this.featureId)
           }
         })
+        return
       }
       this.$store.dispatch('createScenario', {
           title: this.scenarioName,
