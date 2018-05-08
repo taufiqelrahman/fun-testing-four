@@ -7,11 +7,14 @@ class Report::Scenario < ApplicationRecord
 
   validates :scenario_id, uniqueness: { scope: :report_feature_id }
   state_machine :state, initial: :pending do
-    event :success do
-      transition [:pending, :failed] => :successed
+    event :pass do
+      transition [:pending, :failed, :blocked] => :passed
+    end
+    event :blocking do
+      transition [:pending] => :blocked
     end
     event :decline do
-      transition [:pending] => :failed
+      transition [:pending, :blocked] => :failed
     end
   end
 
@@ -24,7 +27,7 @@ class Report::Scenario < ApplicationRecord
   private
 
   def update_report_feature
-    if successed?
+    if passed?
       other_report_scenarios = ::Report::Scenario.where(report_feature_id: self.report_feature_id).not(id: self.id).to_a
       all_success = other_report_scenarios.all?(&:successed?)
       ReportService.update_report_feature(self.report_feature, {state: 'successed'}) if all_success

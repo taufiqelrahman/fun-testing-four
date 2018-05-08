@@ -6,11 +6,14 @@ class Report::Step < ApplicationRecord
 
   validates :step_id, uniqueness: { scope: :report_scenario_id }
   state_machine :state, initial: :pending do
-    event :success do
-      transition [:pending, :failed] => :successed
+    event :pass do
+      transition [:pending, :failed, :blocked] => :passed
+    end
+    event :blocking do
+      transition [:pending] => :blocked
     end
     event :decline do
-      transition [:pending] => :failed
+      transition [:pending, :blocked] => :failed
     end
   end
 
@@ -24,11 +27,11 @@ class Report::Step < ApplicationRecord
   private
 
   def set_to_successed
-    self.state = :successed if self.state == 'pending'
+    self.state = :passed if self.state == 'pending'
   end
 
   def update_report_scenario
-    if successed?
+    if passed?
       other_report_steps = ::Report::Step.where(report_scenario_id: self.report_scenario_id).not(id: self.id).to_a
       all_success = other_report_steps.all?(&:successed?)
       ReportService.update_report_scenario(self.report_scenario, {state: 'successed'}) if all_success

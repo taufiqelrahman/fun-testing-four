@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_08_032158) do
+ActiveRecord::Schema.define(version: 2018_05_08_063716) do
 
   create_table "features", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 2018_05_08_032158) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
+    t.text "description"
     t.index ["feature_id", "deleted_at"], name: "index_report_features_on_feature_id_and_deleted_at"
     t.index ["id", "deleted_at"], name: "index_report_features_on_id_and_deleted_at"
   end
@@ -48,6 +49,7 @@ ActiveRecord::Schema.define(version: 2018_05_08_032158) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
+    t.text "description"
     t.index ["id", "deleted_at"], name: "index_report_scenarios_on_id_and_deleted_at"
     t.index ["report_feature_id", "deleted_at"], name: "index_report_scenarios_on_report_feature_id_and_deleted_at"
     t.index ["scenario_id", "deleted_at"], name: "index_report_scenarios_on_scenario_id_and_deleted_at"
@@ -61,6 +63,7 @@ ActiveRecord::Schema.define(version: 2018_05_08_032158) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
+    t.text "description"
     t.index ["id", "deleted_at"], name: "index_report_steps_on_id_and_deleted_at"
     t.index ["report_scenario_id", "deleted_at"], name: "index_report_steps_on_report_scenario_id_and_deleted_at"
     t.index ["step_id", "deleted_at"], name: "index_report_steps_on_step_id_and_deleted_at"

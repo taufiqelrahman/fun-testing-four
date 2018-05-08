@@ -8,6 +8,7 @@ module ReportService
     def perform
       ActiveRecord::Base.transaction do
         @report_step.assign_attributes(@attributes)
+        @report_step.save!
       end
       @report_step
     end

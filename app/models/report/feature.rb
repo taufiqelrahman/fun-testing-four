@@ -5,11 +5,14 @@ class Report::Feature < ApplicationRecord
   has_many :report_scenarios, class_name: '::Report::Scenario', foreign_key: :report_feature_id
 
   state_machine :state, initial: :pending do
-    event :success do
-      transition [:pending, :failed] => :successed
+    event :pass do
+      transition [:pending, :failed, :blocked] => :passed
+    end
+    event :blocking do
+      transition [:pending] => :blocked
     end
     event :decline do
-      transition [:pending] => :failed
+      transition [:pending, :blocked] => :failed
     end
   end
 
