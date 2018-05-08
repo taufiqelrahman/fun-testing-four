@@ -55,7 +55,7 @@ export default {
       menus: [
         {
           path: '/',
-          name: 'Overview',
+          name: 'Dashboard',
         },
         { 
           path: '/results',
