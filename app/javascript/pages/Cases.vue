@@ -14,7 +14,7 @@
                 @change="selectSquad"
               >
                 <option disabled value=''>Pilih squadmu</option>
-                <option v-for="item in squadOpts" :key="item.id" :value="item.id">{{ item.description }}</option>
+                <option v-for="item in squads" :key="item.id" :value="item.id">{{ item.name }}</option>
               </select>
             </div>
             <div class="mb-4">
@@ -25,63 +25,55 @@
                 v-model="feature"
                 @change="selectFeature"
               >
-                <option disabled value=''>Pilih squadmu</option>
-                <option v-if="featureOpts" v-for="item in featureOpts" :key="item.id" :value="item.id">{{ item.description }}</option>
+                <option disabled value=''>Pilih featurenya</option>
+                <option v-if="features" v-for="item in features" :key="item.id" :value="item.id">{{ item.title }}</option>
               </select>
             </div>
           </div>
         </panel>
       </div>
       <div class="w-1/2 px-4">
-        <panel v-if="isForm" class="mt-4">
-          <template slot="header">
-            <div class="font-semibold">New Scenario</div>
-          </template>
-          <div class="px-6 py-4">
-          Name
-          <input
-            v-model="scenarioName"
-            type="text"
-            class="border border-solid border-grey-light p-2 text-sm w-full my-3"/>
-          <template v-for="(item, index) in scenarioSteps">
-            Step {{ index + 1 }}
-            <input
-              v-model="item.value"
-              :key="index" type="text"
-              class="border border-solid border-grey-light p-2 text-sm w-full my-3" />
-          </template>
-          <div @click="addStep" class="hover:text-blue-dark cursor-pointer mb-4">Add step</div>
-          <button
-            class="bg-blue-light hover:bg-blue text-white font-semibold hover:text-white py-2 px-4 border border-blue-light hover:border-transparent rounded"
-            @click.prevent="toggleForm">
-            Save
-          </button>
-          </div>
-        </panel>
+        <scenario-form v-if="isForm" @toggleForm="toggleForm" :scenario="scenarioToEdit"/>
         <panel v-else class="mt-4">
           <template slot="header">
             <div class="font-semibold">Feature Details</div>
           </template>
+          <template slot="actions">
+            <div>
+              <button
+                v-if="selectedFeature"
+                class="bg-red-light hover:bg-red text-white font-semibold hover:text-white py-1 px-3 border border-red-light hover:border-transparent rounded"
+                @click.prevent="deleteFeature(selectedFeature.id)">
+                <i class="zmdi zmdi-delete text-sm"></i>
+              </button>
+            </div>
+          </template>
           <div v-if="selectedFeature" class="px-6 py-4">
-            <div class="py-1">Squad Name: {{ selectedFeature.squad }}</div>
-            <div class="py-1">Feature Name: {{ selectedFeature.description }}</div>
+            <div class="py-1">Squad Name: {{ getSquadName }}</div>
+            <div class="py-1">Feature Name: {{ selectedFeature.title }}</div>
             <div class="my-4">
-              <template v-for="item in selectedFeature.scenarios">
+              <template v-for="item in scenarios">
                 <div
                   :key="item.id"
-                  @click="toggleScenario(item.id)"
                   class="cursor-pointer">
                   <div class="flex justify-between items-center border-b border-solid border-grey-light py-1 hover:bg-blue-lighter">
-                    <div>{{ item.name }}</div>
-                    <button
-                      class="bg-red-light hover:bg-red text-white font-semibold hover:text-white py-2 px-4 border border-red-light hover:border-transparent rounded"
-                      @click.prevent="deleteScenario(item.id)">
-                      Delete
-                    </button>
+                    <div>{{ item.title }}</div>
+                    <div>
+                      <button
+                        class="bg-blue-light hover:bg-blue text-white font-semibold hover:text-white py-1 px-3 border border-blue-light hover:border-transparent rounded"
+                        @click.prevent="editScenario(item)">
+                        <i class="zmdi zmdi-edit text-sm"></i>
+                      </button>
+                      <button
+                        class="bg-red-light hover:bg-red text-white font-semibold hover:text-white py-1 px-3 border border-red-light hover:border-transparent rounded"
+                        @click.prevent="deleteScenario(item.id)">
+                        <i class="zmdi zmdi-delete text-sm"></i>
+                      </button>
+                    </div>
                   </div>
-                  <div v-if="item.show" class="border border-solid border-grey-light border-t-0 p-3">
+                  <div v-if="item.id === showScenario" class="border border-solid border-grey-light border-t-0 p-3">
                     <div v-for="(step, index) in item.steps" :key="index" class="py-1">
-                      Step {{ index + 1 }}: {{ step }}
+                      Step {{ index + 1 }}: {{ step.title }}
                     </div>
                   </div>
                 </div>
@@ -104,47 +96,63 @@
 
 <script>
 import Panel from 'components/Panel'
+import ScenarioForm from 'components/ScenarioForm'
 export default {
   name: 'Cases',
   components: {
     Panel,
+    ScenarioForm
   },
   data() {
     return {
-      squadOpts: [
-        {
-          id: 0,
-          description: 'CSI',
-          features: [
-            {
-              id: 0,
-              description: 'Fitur 1',
-            },
-            {
-              id: 1,
-              description: 'Fitur 2',
-            },
-          ]
-        },
-        {
-          id: 1,
-          description: 'WoW',
-        },
-      ],
+      // squadOpts: [
+      //   {
+      //     id: 0,
+      //     description: 'CSI',
+      //     features: [
+      //       {
+      //         id: 0,
+      //         description: 'Fitur 1',
+      //       },
+      //       {
+      //         id: 1,
+      //         description: 'Fitur 2',
+      //       },
+      //     ]
+      //   },
+      //   {
+      //     id: 1,
+      //     description: 'WoW',
+      //   },
+      // ],
       squad: '',
       feature: '',
       selectedFeature: null,
+      showScenario: null,
       isForm: false,
-      scenarioName: '',
-      scenarioSteps: [{
-        value: '',
-      }],
+      scenarioToEdit: null,
+      // scenarioName: '',
+      // scenarioSteps: [{
+      //   value: '',
+      // }],
     }
   },
   computed: {
-    featureOpts() {
-      if (this.squad === '') return []
-      return this.squadOpts.find(item => item.id === 0).features
+    // featureOpts() {
+    //   if (this.squad === '') return []
+    //   return this.squadOpts.find(item => item.id === 0).features
+    // },
+    squads() {
+      return this.$store.state.data.squads
+    },
+    getSquadName() {
+      return this.$store.state.data.squads.find(item => item.id === this.squad).name
+    },
+    features() {
+      return this.$store.state.data.features
+    },
+    scenarios() {
+      return this.$store.state.data.scenarios
     },
   },
   methods: {
@@ -157,51 +165,52 @@ export default {
     },
     selectSquad(e) {
       if (!e.isTrusted) return;
+      this.$store.dispatch('getFeatures', this.squad)
       this.feature = ''
+      this.isForm = false
     },
     selectFeature(e) {
       if (!e.isTrusted) return;
-      this.selectedFeature = {
-        id: 0,
-        description: 'Fitur 1',
-        squad: 'CSI',
-        scenarios: [
-          {
-            id: 0,
-            name: 'Make sure to turn on.',
-            show: false,
-            steps: [
-              'test',
-              'test again',
-            ]
-          },
-          {
-            id: 1,
-            name: 'Make sure to turn off.',
-            show: false,
-            steps: [
-              'test 1',
-              'test not again',
-            ]
-          },
-        ]
-      }
+      this.selectedFeature = this.features.find(item => item.id === this.feature)
+      this.$store.dispatch('getScenarios', this.feature)
+      this.isForm = false
+    },
+    deleteFeature(id) {
+      this.$store.dispatch('deleteFeature', id)
+        .then(res => {
+          if (res) {
+            alert('delete feature success')
+            this.$store.dispatch('getFeatures', this.squad)
+            this.selectedFeature = null
+            this.feature = ''
+          }
+        })
     },
     deleteScenario(id) {
       // let newScenarios = Object.assign([], this.selectedFeature.scenarios)
       // // newScenarios.slice
       // this.$set(this.selectedFeature, 'scenarios', newScenarios)
     },
+    editScenario(item) {
+      this.scenarioToEdit = item
+      this.toggleForm()
+    },
     toggleForm() {
       this.isForm = !this.isForm
     },
-    addStep() {
-      this.scenarioSteps.push({ value: '' })
-    },
+    // addStep() {
+    //   this.scenarioSteps.push({ value: '' })
+    // },
     toggleScenario(id) {
-      let newScenario = this.selectedFeature.scenarios.find(item => item.id === id)
-      this.$set(newScenario, 'show', !newScenario.show)
+      if (this.showScenario === id) {
+        this.showScenario = null
+        return
+      }
+      this.showScenario = id
     }
   },
+  beforeMount() {
+    this.$store.dispatch('getSquads')
+  }
 }
 </script>

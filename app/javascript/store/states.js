@@ -19,4 +19,5 @@ export const user = {
 export const data = {
   squads: null,
   features: [],
+  scenarios: null,
 }

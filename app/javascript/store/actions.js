@@ -73,7 +73,7 @@ export const dataActions = {
 			})
 	},
 	getFeatures({ commit }, payload) {
-		const endpoint = `${URL.squads}/${payload}/features`
+		const endpoint = URL.features.replace('[ID]', payload)
 		axios.get(endpoint, axiosConfigAuth())
 			.then(res => {
 				commit(SET_DATA, { type: 'features', data: res.data.data })
@@ -83,5 +83,33 @@ export const dataActions = {
 				commit(TOGGLE_SPINNER, false)
 				commit(TOGGLE_ALERT, { show: true, message: err.response.data.message })
 			})
-	}
+	},
+	deleteFeature({ commit }, payload) {
+		const endpoint = URL.feature.replace('[ID]', payload)
+		return new Promise((resolve, reject) => {
+			axios.delete(endpoint, axiosConfigAuth())
+				.then(res => {
+					// commit(TOGGLE_SPINNER, false)
+					// alert('delete success')
+					resolve(true)
+				})
+				.catch(err => {
+					commit(TOGGLE_SPINNER, false)
+					commit(TOGGLE_ALERT, { show: true, message: err.response.data.message })
+				})
+
+		}) 
+	},
+	getScenarios({ commit }, payload) {
+		const endpoint = URL.scenarios.replace('[ID]', payload)
+		axios.get(endpoint, axiosConfigAuth())
+			.then(res => {
+				commit(SET_DATA, { type: 'scenarios', data: res.data.data })
+				// 	commit(TOGGLE_SPINNER, false)
+			})
+			.catch(err => {
+				commit(TOGGLE_SPINNER, false)
+				commit(TOGGLE_ALERT, { show: true, message: err.response.data.message })
+			})
+	},
 }

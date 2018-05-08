@@ -16,11 +16,6 @@ export default {
   components: {
     Navbar,
   },
-  methods: {
-    ...mapActions([
-      'getUser',
-    ]),
-  },
   beforeMount() {
     if (this.$store.state.ui.isLoggedIn) this.$store.dispatch('getUser')
   }

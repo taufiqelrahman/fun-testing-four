@@ -53,4 +53,7 @@ export const URL = {
   login: '/api/authenticate',
   user: '/api/me',
   squads: '/api/squads',
+  features: '/api/squads/[ID]/features',
+  feature: '/api/features/[ID]',
+  scenarios: '/api/features/[ID]/scenarios?includes=steps',
 }
