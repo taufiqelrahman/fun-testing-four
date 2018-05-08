@@ -26,7 +26,7 @@ class Api::ReportFeaturesController < ApiController
 
   def update
     report = Report::Feature.find_by(id: permit_params[:id])
-    report = ReportService.update_report_feature(report, {state: permit_params[:state], desciption: permit_params[:desciption]}) if report
+    report = ReportService.update_report_feature(report, {state: permit_params[:state], desciption: permit_params[:description]}) if report
     json_response(report)
   rescue => e
     render json: {error: e.message}, status: 422
@@ -56,6 +56,6 @@ class Api::ReportFeaturesController < ApiController
   end
 
   def permit_params
-    params.permit(:id, :limit, :offset, :state, :includes, :desciption)
+    params.permit(:id, :limit, :offset, :state, :includes, :description)
   end
 end
