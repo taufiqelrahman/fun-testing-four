@@ -14,4 +14,22 @@ class Report::Scenario < ApplicationRecord
       transition [:pending] => :failed
     end
   end
+
+  after_commit :update_report_feature
+
+  def state
+    self[:state]
+  end
+
+  private
+
+  def update_report_feature
+    if successed?
+      other_report_scenarios = ::Report::Scenario.where(report_feature_id: self.report_feature_id).not(id: self.id).to_a
+      all_success = other_report_scenarios.all?(&:successed?)
+      ReportService.update_report_feature(self.report_feature, {state: 'successed'}) if all_success
+    elsif failed?
+      ReportService.update_report_feature(self.report_feature, {state: 'failed'})
+    end
+  end
 end

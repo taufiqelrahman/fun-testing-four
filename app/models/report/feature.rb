@@ -12,4 +12,8 @@ class Report::Feature < ApplicationRecord
       transition [:pending] => :failed
     end
   end
+
+  def state
+    self[:state]
+  end
 end
