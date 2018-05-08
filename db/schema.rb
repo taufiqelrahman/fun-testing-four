@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 2018_05_08_063716) do
 
   create_table "report_features", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "feature_id"
-    t.string "state", default: "pending"
+    t.string "state"
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -44,7 +44,7 @@ ActiveRecord::Schema.define(version: 2018_05_08_063716) do
   create_table "report_scenarios", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "report_feature_id"
     t.integer "scenario_id"
-    t.string "state", default: "pending"
+    t.string "state"
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -58,7 +58,7 @@ ActiveRecord::Schema.define(version: 2018_05_08_063716) do
   create_table "report_steps", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "report_scenario_id"
     t.integer "step_id"
-    t.string "state", default: "pending"
+    t.string "state"
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

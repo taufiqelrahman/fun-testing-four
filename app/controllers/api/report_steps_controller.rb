@@ -26,13 +26,13 @@ class Api::ReportStepsController < ApiController
 
   def update
     report = Report::Scenario.find_by(id: permit_params[:id])
-    report = ReportService.update_report_step(report, {state: permit_params[:state]}) if report
+    report = ReportService.update_report_step(report, {state: permit_params[:state], desciption: permit_params[:desciption]}) if report
     json_response(report)
   rescue => e
     render json: {error: e.message}, status: 422
   end
 
   def permit_params
-    params.permit(:id, :limit, :offset, :state, :includes)
+    params.permit(:id, :limit, :offset, :state, :includes, :desciption)
   end
 end

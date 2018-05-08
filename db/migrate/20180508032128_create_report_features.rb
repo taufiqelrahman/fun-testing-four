@@ -2,7 +2,7 @@ class CreateReportFeatures < ActiveRecord::Migration[5.2]
   def change
     create_table :report_features do |t|
       t.integer :feature_id, null: true
-      t.string  :state, default: :pending
+      t.string  :state
       t.integer :user_id, null: true
 
       t.timestamps

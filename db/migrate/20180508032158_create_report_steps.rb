@@ -3,7 +3,7 @@ class CreateReportSteps < ActiveRecord::Migration[5.2]
     create_table :report_steps do |t|
       t.integer :report_scenario_id, null: true
       t.integer :step_id, null: true
-      t.string  :state, default: :pending
+      t.string  :state
       t.integer :user_id, null: true
 
       t.timestamps

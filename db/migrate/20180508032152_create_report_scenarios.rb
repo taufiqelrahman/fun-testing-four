@@ -3,7 +3,7 @@ class CreateReportScenarios < ActiveRecord::Migration[5.2]
     create_table :report_scenarios do |t|
       t.integer :report_feature_id, null: true
       t.integer :scenario_id, null: true
-      t.string  :state, default: :pending
+      t.string  :state
       t.integer :user_id, null: true
 
       t.timestamps
