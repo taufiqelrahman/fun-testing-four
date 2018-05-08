@@ -21,7 +21,7 @@
           <div class="px-6 py-4">
             <pie-chart
               v-if="summaries"
-              :data="[['Passed', summaries.passed], ['Failed', summaries.failed], ['Blocked', summaries.blocked]]" 
+              :data="[['Passed', summaries.passed], ['Failed', summaries.failed], ['Blocked', summaries.blocked + summaries.pending]]" 
               height="285px"
               :colors="['#38c172', '#e3342f', '#b8c2cc']"></pie-chart>
           </div>
@@ -42,11 +42,11 @@
         </panel>
       </div>
     </div>
-    <panel class="mt-4">
+    <!-- <panel class="mt-4">
       <div class="p-4">
         logs..
       </div>
-    </panel>
+    </panel> -->
   </div>
 </template>
 
