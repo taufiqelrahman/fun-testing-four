@@ -22,4 +22,5 @@ export const data = {
   scenarios: null,
   scenarioReport: [],
   steps: [],
+  summaries: null,
 }

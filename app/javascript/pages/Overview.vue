@@ -20,7 +20,8 @@
           </template>
           <div class="px-6 py-4">
             <pie-chart
-              :data="[['Passed', 44], ['Failed', 23], ['Blocked', 6]]" 
+              v-if="summaries"
+              :data="[['Passed', summaries.passed], ['Failed', summaries.failed], ['Blocked', summaries.blocked]]" 
               height="285px"
               :colors="['#38c172', '#e3342f', '#b8c2cc']"></pie-chart>
           </div>
@@ -69,6 +70,12 @@ export default {
     squads() {
       return this.$store.state.data.squads
     },
+    summaries() {
+      return this.$store.state.data.summaries
+    },
+    // noSummaries() {
+
+    // }
   },
   methods: {
     navigate(path) {
@@ -83,10 +90,12 @@ export default {
     },
     selectSquad() {
       // this.$store.dispatch('getFeatures', this.squad)
+      this.$store.dispatch('getSummaries', this.squad)
     },
   },
   beforeMount() {
     this.$store.dispatch('getSquads')
+    this.$store.dispatch('getSummaries', 1)
   },
 }
 </script>

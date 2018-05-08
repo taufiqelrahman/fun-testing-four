@@ -62,4 +62,5 @@ export const URL = {
   featureReportDetail: '/api/report_features/[ID]/report_scenarios?includes=scenario,report_steps,user',
   updateReportScenario: '/api/report_scenarios/[ID]',
   steps: '/api/report_scenarios/[ID]/report_steps?includes=step',
+  summaries: '/api/squads/[ID]/summaries',
 }

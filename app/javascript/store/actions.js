@@ -23,10 +23,10 @@ export const uiActions = {
 	},
 	logIn({ commit }, payload) {
 		const bodyData = {
-			// email: payload[0],
-			// password: payload[1],
-			email: 'taufiqelrahman@taufiq.com',
-			password: 'elrahman',
+			email: payload.email,
+			password: payload.password,
+			// email: 'taufiqelrahman@taufiq.com',
+			// password: 'elrahman',
 		}
 		axios.post(URL.login, bodyData, axiosConfig())
 			.then(res => {
@@ -252,6 +252,21 @@ export const dataActions = {
 			axios.get(endpoint, axiosConfigAuth())
 				.then(res => {
 					commit(SET_DATA, { type: 'steps', data: res.data.data })
+					// commit(TOGGLE_SPINNER, false)
+					resolve(true)
+				})
+				.catch(err => {
+					commit(TOGGLE_SPINNER, false)
+					commit(TOGGLE_ALERT, { show: true, message: err.response.data.message })
+				})
+		})
+	},
+	getSummaries({ commit }, payload) {
+		const endpoint = URL.summaries.replace('[ID]', payload)
+		return new Promise((resolve, reject) => {
+			axios.get(endpoint, axiosConfigAuth())
+				.then(res => {
+					commit(SET_DATA, { type: 'summaries', data: res.data.data })
 					// commit(TOGGLE_SPINNER, false)
 					resolve(true)
 				})
