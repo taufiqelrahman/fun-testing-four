@@ -12,6 +12,13 @@ Rails.application.routes.draw do
       post :features, on: :member, to: 'squads#create_feature'
     end
     resources :users, except: [:destroy]
+    resources :report_features, except: [:destroy] do
+      get :report_scenarios, on: :member
+    end
+    resources :report_scenarios, except: [:destroy] do
+      get :report_steps, on: :member
+    end
+    resources :report_steps, except: [:destroy]
     resources :steps, only: [:create]
     resources :scenarios
     get '/report/features', to: 'report_features#index'
