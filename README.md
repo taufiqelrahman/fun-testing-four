@@ -3,10 +3,12 @@
 QAwesome
 
 Scenarios API
-
-  * POST /scenarios params title, available_on, description, feature_id, steps[]
-  * PUT /scenarios/:id params title, available_on, description, steps[]
-  * DELETE /scenarios:id
+  - CREATE
+    POST /scenarios, Params: title, available_on, description, feature_id, steps[]
+  - UPDATE
+    PUT /scenarios/:id, Params: title, available_on, description, steps[]
+  - DELETE
+    DELETE /scenarios/:id
 
 This README would normally document whatever steps are necessary to get the
 application up and running.
