@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     resources :squads, except: [:destroy] do
       get :features, on: :member, to: 'squads#features'
       post :features, on: :member, to: 'squads#create_feature'
+      get :summaries, on: :member, to: 'squads#summaries'
     end
     resources :users, except: [:destroy]
     resources :report_features, except: [:destroy] do

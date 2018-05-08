@@ -54,6 +54,27 @@ class Api::SquadsController < ApiController
     render json: {error: e.message}, status: 422
   end
 
+  def summaries
+    squad = Squad.find_by(id: permit_params[:id])
+    data = {
+      pending: 0,
+      passed: 0,
+      blocked: 0,
+      failed: 0,
+    }
+    if squad
+      squad.features.to_a.each do |feature|
+        report = feature.last_report
+        if report
+          data[report.state.to_sym] += 1
+        end
+      end
+      json_response(data)
+    else
+      json_response(squad)
+    end
+  end
+
   def permit_params
     params.permit(:id, :keywords, :limit, :offset, :name, :description)
   end
