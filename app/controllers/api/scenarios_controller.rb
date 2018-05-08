@@ -5,6 +5,8 @@ class Api::ScenariosController < ApiController
     feature = Feature.find(params[:feature_id])
     scenario.features << feature
     json_response(step_builder(scenario), status: :created)
+  rescue => e
+    render json: {error: e.message}, status: 422
   end
 
   # PUT /scenarios/:id params title, available_on, description, steps[]
@@ -13,6 +15,8 @@ class Api::ScenariosController < ApiController
     scenario.update(scenario_params)
     scenario.steps = []
     json_response(step_builder(scenario), status: :updated)
+  rescue => e
+    render json: {error: e.message}, status: 422
   end
 
   # DELETE /scenarios:id
@@ -20,6 +24,8 @@ class Api::ScenariosController < ApiController
     scenario = Scenario.find(params[:id])
     scenario.delete
     head :no_content
+  rescue => e
+    render json: {error: e.message}, status: 422
   end
 
   private

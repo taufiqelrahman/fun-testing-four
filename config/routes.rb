@@ -14,5 +14,6 @@ Rails.application.routes.draw do
     resources :users, except: [:destroy]
     resources :steps, only: [:create]
     resources :scenarios
+    get '/report/features', to: 'report_features#index'
   end
 end
