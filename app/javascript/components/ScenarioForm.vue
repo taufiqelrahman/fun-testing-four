@@ -42,6 +42,9 @@ export default {
     scenario: {
       required: false,
     },
+    featureId: {
+      required: false,
+    },
   },
   data() {
     return {
@@ -59,13 +62,35 @@ export default {
       this.$emit('toggleForm')
     },
     submit() {
-      this.$emit('toggleForm')
+      const steps = this.scenarioSteps.map(item => item.title)
+      if (this.scenario) {
+        this.$store.dispatch('editScenario', {
+          title: this.scenarioName,
+          steps: steps,
+          id: this.scenario.id,
+        }).then(res => {
+          if (res) {
+            this.$emit('toggleForm')
+            this.$store.dispatch('getScenarios', this.featureId)
+          }
+        })
+      }
+      this.$store.dispatch('createScenario', {
+          title: this.scenarioName,
+          steps: steps,
+          id: this.featureId,
+        }).then(res => {
+          if (res) {
+            this.$emit('toggleForm')
+            this.$store.dispatch('getScenarios', this.featureId)
+          }
+        })
     },
   },
   mounted() {
-    if (this.scenario !== null) {
+    if (this.scenario) {
       this.scenarioName = this.scenario.title
-      this.scenarioSteps = this.scenario.steps
+      this.scenarioSteps = Object.assign([], this.scenario.steps)
     }
   }
 }

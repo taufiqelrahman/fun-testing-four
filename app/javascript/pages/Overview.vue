@@ -28,13 +28,13 @@
       </div>
       <div class="w-1/3 px-4">
         <panel class="mt-4">
-          <div @click="navigate('/results')" class="h-48 items-center flex flex-col justify-center hover:bg-blue-dark cursor-pointer text-white bg-blue">
+          <div @click="navigate('/results')" class="h-48 items-center flex flex-col justify-center hover:bg-blue-light cursor-pointer text-white bg-blue">
             <h4>Run Tests</h4>
             <i class="zmdi zmdi-check-all text-5xl mt-3"></i>
           </div>
         </panel>
         <panel class="mt-4">
-          <div @click="navigate('/cases')" class="h-48 items-center flex flex-col justify-center hover:bg-green-dark cursor-pointer text-white bg-green">
+          <div @click="navigate('/cases')" class="h-48 items-center flex flex-col justify-center hover:bg-green-light cursor-pointer text-white bg-green">
             <h4>Manage Tests</h4>
             <i class="zmdi zmdi-wrench text-5xl mt-3"></i>
           </div>

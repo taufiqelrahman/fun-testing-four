@@ -33,7 +33,7 @@
         </panel>
       </div>
       <div class="w-1/2 px-4">
-        <scenario-form v-if="isForm" @toggleForm="toggleForm" :scenario="scenarioToEdit"/>
+        <scenario-form v-if="isForm" @toggleForm="toggleForm" :scenario="scenarioToEdit" :featureId="selectedFeature.id"/>
         <panel v-else class="mt-4">
           <template slot="header">
             <div class="font-semibold">Feature Details</div>
@@ -55,6 +55,7 @@
               <template v-for="item in scenarios">
                 <div
                   :key="item.id"
+                  @click="toggleScenario(item.id)"
                   class="cursor-pointer">
                   <div class="flex justify-between items-center border-b border-solid border-grey-light py-1 hover:bg-blue-lighter">
                     <div>{{ item.title }}</div>
@@ -72,7 +73,10 @@
                     </div>
                   </div>
                   <div v-if="item.id === showScenario" class="border border-solid border-grey-light border-t-0 p-3">
-                    <div v-for="(step, index) in item.steps" :key="index" class="py-1">
+                    <div v-if="item.steps.length === 0" class="py-1">
+                      No steps yet
+                    </div>
+                    <div v-else v-for="(step, index) in item.steps" :key="index" class="py-1">
                       Step {{ index + 1 }}: {{ step.title }}
                     </div>
                   </div>
@@ -187,15 +191,21 @@ export default {
         })
     },
     deleteScenario(id) {
-      // let newScenarios = Object.assign([], this.selectedFeature.scenarios)
-      // // newScenarios.slice
-      // this.$set(this.selectedFeature, 'scenarios', newScenarios)
+      this.$store.dispatch('deleteScenario', id)
+        .then(res => {
+          if (res) {
+            this.$store.dispatch('getScenarios', this.feature)
+          }
+        })
     },
     editScenario(item) {
       this.scenarioToEdit = item
       this.toggleForm()
     },
     toggleForm() {
+      if (this.isForm) {
+        this.scenarioToEdit = null
+      }
       this.isForm = !this.isForm
     },
     // addStep() {

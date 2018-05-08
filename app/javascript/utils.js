@@ -16,7 +16,8 @@ export function axiosConfig() {
 export function axiosConfigAuth() {
   return {
     headers: {
-      'Authorization': store.state.user.access_token
+      'Authorization': store.state.user.access_token,
+      'Content-Type': 'application/json'
     }
   }
 }
@@ -56,4 +57,5 @@ export const URL = {
   features: '/api/squads/[ID]/features',
   feature: '/api/features/[ID]',
   scenarios: '/api/features/[ID]/scenarios?includes=steps',
+  scenario: '/api/scenarios/[ID]',
 }
