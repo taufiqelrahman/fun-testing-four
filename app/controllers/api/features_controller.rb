@@ -31,7 +31,7 @@ class Api::FeaturesController < ApiController
 
   def destroy
     feature = Feature.find_by(id: permit_params[:id])
-    feature.delete!
+    feature.delete
     json_response(feature, status: 204)
   rescue => e
     render json: {error: e.message}, status: 422

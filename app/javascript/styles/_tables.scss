@@ -1,0 +1,51 @@
+$table-text-color: rgba(0, 0, 0, .87);
+$table-head-color: rgb(158, 158, 158);
+$table-border-color: rgb(224, 224, 224);
+
+
+.table {
+  border-collapse: collapse;
+  table-layout: fixed;
+
+  thead tr {
+    border-bottom: 1px solid $table-border-color;
+    color: $table-text-color;
+    height: 48px;
+
+    th {
+      font-weight: normal;
+      font-size: 12px;
+      padding-left: 24px;
+      padding-right: 24px;
+      height: 56px;
+      text-align: left;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      color: $table-head-color;
+      position: relative;
+      background-color: inherit;
+    }
+  }
+
+  tbody tr {
+    border-bottom: 1px solid $table-border-color;
+    color: $table-text-color;
+    height: 48px;
+
+    td {
+      padding-left: 24px;
+      padding-right: 24px;
+      height: 48px;
+      text-align: left;
+      font-size: 13px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      background-color: inherit;
+    }
+  }
+}
+
+.VuePagination {
+  display: none;
+}
