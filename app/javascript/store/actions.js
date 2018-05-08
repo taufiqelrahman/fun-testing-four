@@ -196,4 +196,69 @@ export const dataActions = {
 				})
 		})
 	},
+	generateFeatureReport({ dispatch, commit }, payload) {
+		const endpoint = URL.featureReport.replace('[ID]', payload)
+		return new Promise((resolve, reject) => {
+			axios.post(endpoint, {}, axiosConfigAuth())
+				.then(res => {
+					dispatch('getFeatureReport', res.data.data.id)
+						.then(res => {
+							if (res) resolve(res.data.data.id)
+						})
+					// commit(TOGGLE_SPINNER, false)
+				})
+				.catch(err => {
+					commit(TOGGLE_SPINNER, false)
+					commit(TOGGLE_ALERT, { show: true, message: err.response.data.message })
+				})
+		})
+	},
+	getFeatureReport({ commit }, payload) {
+		const endpoint = URL.featureReportDetail.replace('[ID]', payload)
+		return new Promise((resolve, reject) => {
+			axios.get(endpoint, axiosConfigAuth())
+				.then(res => {
+					commit(SET_DATA, { type: 'scenarioReport', data: res.data.data })
+					// commit(TOGGLE_SPINNER, false)
+					resolve(true)
+				})
+				.catch(err => {
+					commit(TOGGLE_SPINNER, false)
+					commit(TOGGLE_ALERT, { show: true, message: err.response.data.message })
+				})
+		})
+	},
+	updateReportScenario({ dispatch, commit }, payload) {
+		const bodyData = {
+			state: payload.state,
+			description: payload.description,
+		}
+		const endpoint = URL.updateReportScenario.replace('[ID]', payload.id)
+		return new Promise((resolve, reject) => {
+			axios.put(endpoint, bodyData, axiosConfigAuth())
+				.then(res => {
+					resolve(true)
+					// commit(TOGGLE_SPINNER, false)
+				})
+				.catch(err => {
+					commit(TOGGLE_SPINNER, false)
+					commit(TOGGLE_ALERT, { show: true, message: err.response.data.message })
+				})
+		})
+	},
+	getSteps({ commit }, payload) {
+		const endpoint = URL.steps.replace('[ID]', payload)
+		return new Promise((resolve, reject) => {
+			axios.get(endpoint, axiosConfigAuth())
+				.then(res => {
+					commit(SET_DATA, { type: 'steps', data: res.data.data })
+					// commit(TOGGLE_SPINNER, false)
+					resolve(true)
+				})
+				.catch(err => {
+					commit(TOGGLE_SPINNER, false)
+					commit(TOGGLE_ALERT, { show: true, message: err.response.data.message })
+				})
+		})
+	},
 }

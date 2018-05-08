@@ -8,19 +8,19 @@
         <div class="px-6 py-4">
           <div class="mb-4">
             <pie-chart
-              :data="[['Passed', 44], ['Failed', 23], ['Blocked', 6]]" 
+              :data="[['Passed', passed], ['Failed', failed], ['Blocked', blocked]]" 
               height="180px"
               :colors="['#38c172', '#e3342f', '#b8c2cc']"></pie-chart>
           </div>
-          <template v-for="item in test.scenarios">
+          <template v-for="item in scenarios">
             <div
               :key="item.id"
               :class="{'bg-blue-lighter': selectedScenario && item.id === selectedScenario.id}"
               class="flex justify-between py-2 items-center hover:bg-blue-lightest px-4 cursor-pointer"
               @click="selectTest(item)"
               >
-              <div>{{ item.name }}</div>
-              <tag :type="item.status" />
+              <div>{{ item.scenario.title }}</div>
+              <tag :type="item.state" />
             </div>
           </template>
         </div>
@@ -33,11 +33,16 @@
         </template>
         <div class="px-6 py-4">
           <div v-if="selectedScenario">
-            <h4>{{ selectedScenario.name }}</h4>
+            <h4>{{ selectedScenario.scenario.title }}</h4>
             <hr class="border-solid border-t border-grey-light mt-4" />
             <div class="pt-3 pb-2 font-semibold">Preconditions</div>
             <div class="text-sm leading-normal">
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+              {{ selectedScenario.scenario.description }}
+            </div>
+            <hr class="border-solid border-t border-grey-light mt-4" />
+            <div class="pt-3 pb-2 font-semibold">Test Steps</div>
+            <div v-if="steps.length > 0" v-for="(item, index) in steps" :key="item.step_id" class="py-1">
+              {{ index + 1 }}. {{ item.step.title }}
             </div>
             <hr class="border-solid border-t border-grey-light mt-3" />
             <div class="pt-3 pb-2 font-semibold">Remarks :</div>
@@ -55,17 +60,18 @@
                   type="radio">
                 <div
                   :class="assign === item.value ? item.bg : 'bg-grey-lighter'"
-                  class="p-2">{{ item.text }}</div>
+                  class="p-2 text-capitalize">{{ item.value }}</div>
               </label>
             </div>
             <div class="flex h-24 text-sm">
               <div class="w-1/2 p-3 border border-solid border-grey-lighter">
-                <tag :type="0" />
-                <div class="my-1">{{ new Date() }}</div>
-                <div>Username</div>
+                <tag :type="selectedScenario.state" />
+                <div class="my-1">{{ selectedScenario.updated_at }}</div>
+                <div>{{ selectedScenario.user.username }}</div>
               </div>
               <div class="w-1/2 p-3 border border-solid border-grey-lighter">
-                Remarks
+                Remarks:
+                {{ selectedScenario.description }}
               </div>
             </div>
           </div>
@@ -114,35 +120,69 @@ export default {
           },
         ]
       },
-      selectedScenario: null,
+      scenarioId: null,
       remark: null,
       assign: null,
       assignOpts: [
         {
-          value: 0,
-          text: 'Passed',
+          value: 'passed',
           bg: 'bg-green text-white',
         },
         {
-          value: 2,
-          text: 'Blocked',
+          value: 'blocked',
           bg: 'bg-grey',
         },
         {
-          value: 1,
-          text: 'Failed',
+          value: 'failed',
           bg: 'bg-red text-white',
         },
       ]
     }
   },
-  methods: {
-    selectTest(item) {
-      this.selectedScenario = item
+  watch: {
+    assign(val) {
+      if (val) this.updateTest();
     },
   },
+  computed: {
+    scenarios() {
+      return this.$store.state.data.scenarioReport
+    },
+    selectedScenario() {
+      return this.scenarios.find(item => item.id === this.scenarioId)
+    },
+    passed() {
+      return this.scenarios.filter(item => item.state === 'passed').length
+    },
+    failed() {
+      return this.scenarios.filter(item => item.state === 'failed').length
+    },
+    blocked() {
+      return this.scenarios.filter(item => item.state === 'blocked').length
+    },
+    steps() {
+      return this.$store.state.data.steps
+    },
+  },
+  methods: {
+    selectTest(item) {
+      this.scenarioId = item.id
+      this.remark = null
+      this.assign = null
+      this.$store.dispatch('getSteps', this.selectedScenario.id)
+    },
+    updateTest() {
+      this.$store.dispatch('updateReportScenario', {
+        id: this.selectedScenario.id,
+        state: this.assign,
+        description: this.remark,
+      }).then(res => {
+        this.$store.dispatch('getFeatureReport', this.id)
+      })
+    }
+  },
   beforeMount() {
-    
+    this.$store.dispatch('getFeatureReport', this.id)
   }
 }
 </script>

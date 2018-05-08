@@ -1,6 +1,6 @@
 <template>
-  <div :class="renderClass" class="py-2 w-20 text-sm text-center rounded">
-    {{ renderText }}
+  <div :class="renderClass" class="text-capitalize py-2 w-20 text-sm text-center rounded">
+    {{ type }}
   </div>
 </template>
 
@@ -15,28 +15,29 @@ export default {
   computed: {
     renderClass() {
       switch (this.type) {
-        case 0:
+        case 'passed':
           return 'bg-green text-white'
-        case 1:
+        case 'failed':
           return 'bg-red text-white'
-        case 2:
+        case 'pending':
+        case 'blocked':
           return 'bg-grey-light'
         default:
           break;
       }
     },
-    renderText() {
-      switch (this.type) {
-        case 0:
-          return 'Passed'
-        case 1:
-          return 'Failed'
-        case 2:
-          return 'Blocked'
-        default:
-          break;
-      }
-    }
+    // renderText() {
+    //   switch (this.type) {
+    //     case 0:
+    //       return 'Passed'
+    //     case 1:
+    //       return 'Failed'
+    //     case 2:
+    //       return 'Blocked'
+    //     default:
+    //       break;
+    //   }
+    // }
   }
 }
 </script>
