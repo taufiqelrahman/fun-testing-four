@@ -39,7 +39,9 @@ class Api::SquadsController < ApiController
   def features
     object = Squad.find_by(id: permit_params[:id])
     if object
-      object = object.features.to_a
+      object = object.features.to_a.map do |feature|
+        feature.serializable_hash(include: :last_report)
+      end
     end
     json_response(object)
   end
