@@ -68,7 +68,7 @@ class Api::SquadsController < ApiController
         if report
           data[report.state.to_sym] += 1
         else
-          data['pending'] += 1
+          data[:pending] += 1
         end
       end
       json_response(data)
