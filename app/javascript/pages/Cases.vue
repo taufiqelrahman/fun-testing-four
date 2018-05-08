@@ -136,7 +136,6 @@ export default {
     return {
       squad: '',
       feature: '',
-      selectedFeature: null,
       showScenario: null,
       isScenarioForm: false,
       isFeatureForm: false,
@@ -150,6 +149,9 @@ export default {
     },
     getSquadName() {
       return this.$store.state.data.squads.find(item => item.id === this.squad).name
+    },
+    selectedFeature() {
+      return this.features.find(item => item.id === this.feature)
     },
     features() {
       return this.$store.state.data.features
@@ -174,7 +176,7 @@ export default {
     },
     selectFeature(e) {
       if (!e.isTrusted) return;
-      this.selectedFeature = this.features.find(item => item.id === this.feature)
+      // this.selectedFeature = this.features.find(item => item.id === this.feature)
       this.$store.dispatch('getScenarios', this.feature)
       this.isScenarioForm = false
     },
@@ -188,7 +190,7 @@ export default {
           if (res) {
             alert('delete feature success')
             this.$store.dispatch('getFeatures', this.squad)
-            this.selectedFeature = null
+            // this.selectedFeature = null
             this.feature = ''
           }
         })

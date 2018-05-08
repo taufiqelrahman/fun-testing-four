@@ -87,6 +87,11 @@ export default {
     Panel,
     Tag,
   },
+  props: {
+    id: {
+      required: true,
+    },
+  },
   data() {
     return {
       test: {
@@ -135,6 +140,9 @@ export default {
     selectTest(item) {
       this.selectedScenario = item
     },
+  },
+  beforeMount() {
+    
   }
 }
 </script>

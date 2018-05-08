@@ -49,10 +49,10 @@ export default {
       this.$emit('toggleForm')
     },
     submit() {
-      if (this.scenario) {
-        this.$store.dispatch('editScenario', {
+      if (this.feature) {
+        this.$store.dispatch('editFeature', {
           title: this.title,
-          id: this.squadId,
+          id: this.feature.id,
         }).then(res => {
           if (res) {
             this.$emit('toggleForm')
