@@ -11,11 +11,15 @@ class Api::FeaturesController < ApiController
       limit: limit,
       offset: offset
     }
-    json_response(features, meta)
+    data = features.map do |feature|
+      feature.serializable_hash(include: :last_report)
+    end
+    json_response(data, meta)
   end
 
   def show
     feature = Feature.find_by(id: permit_params[:id])
+    feature = feature.serializable_hash(include: :last_report)
     json_response(feature)
   rescue => e
     render json: {error: e.message}, status: 422
@@ -24,6 +28,7 @@ class Api::FeaturesController < ApiController
   def update
     feature = Feature.find_by(id: permit_params[:id])
     feature = FeatureService.update(feature, permit_params[:title]) if feature
+    feature = feature.serializable_hash(include: :last_report)
     json_response(feature)
   rescue => e
     render json: {error: e.message}, status: 422
