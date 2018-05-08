@@ -38,6 +38,7 @@ class Api::ReportScenariosController < ApiController
       limit = permit_params.fetch('limit', 30)
       offset = permit_params.fetch('offset', 0)
       page = (offset / limit) + 1
+      includes = permit_params[:includes].to_s.split(/[\,|\s]+/)
       query = report.report_steps
       report_steps = query.paginate(page: page, per_page: limit).to_a
       meta = {
