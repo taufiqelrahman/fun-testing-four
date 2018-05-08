@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     get :me, to: 'users#me', as: 'users_me'
     resources :features, except: [:create] do
       get :scenarios, on: :member, to: 'features#scenarios'
+      post :reports, on: :member, to: 'features#create_report'
     end
     resources :squads, except: [:destroy] do
       get :features, on: :member, to: 'squads#features'

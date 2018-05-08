@@ -60,6 +60,16 @@ class Api::FeaturesController < ApiController
     end
   end
 
+  def create_report
+    feature = Feature.find_by(id: permit_params[:id])
+    if feature
+      report = FeatureService.create_report(feature, current_user)
+      json_response(report, status: 201)
+    else
+      json_response(nil)
+    end
+  end
+
   def permit_params
     params.permit(:id, :keywords, :limit, :offset, :title, :includes)
   end
