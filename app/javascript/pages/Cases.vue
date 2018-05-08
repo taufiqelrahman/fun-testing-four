@@ -29,17 +29,40 @@
                 <option v-if="features" v-for="item in features" :key="item.id" :value="item.id">{{ item.title }}</option>
               </select>
             </div>
+            <div class="mb-4">
+              <button
+                v-if="squad !== ''"
+                class="bg-blue-light hover:bg-blue text-white font-semibold hover:text-white py-2 px-4 border border-blue-light hover:border-transparent rounded"
+                @click.prevent="toggleFeatureForm">
+                Add Feature
+              </button>
+            </div>
           </div>
         </panel>
       </div>
       <div class="w-1/2 px-4">
-        <scenario-form v-if="isForm" @toggleForm="toggleForm" :scenario="scenarioToEdit" :featureId="selectedFeature.id"/>
+        <scenario-form
+          v-if="isScenarioForm"
+          @toggleForm="toggleScenarioForm"
+          :scenario="scenarioToEdit"
+          :featureId="selectedFeature.id"/>
+        <feature-form
+          v-if="isFeatureForm"
+          @toggleForm="toggleFeatureForm"
+          :feature="featureToEdit"
+          :squadId="squad"/>
         <panel v-else class="mt-4">
           <template slot="header">
             <div class="font-semibold">Feature Details</div>
           </template>
           <template slot="actions">
             <div>
+              <button
+                v-if="selectedFeature"
+                class="bg-blue-light hover:bg-blue text-white font-semibold hover:text-white py-1 px-3 border border-blue-light hover:border-transparent rounded"
+                @click.prevent="editFeature(selectedFeature)">
+                <i class="zmdi zmdi-edit text-sm"></i>
+              </button>
               <button
                 v-if="selectedFeature"
                 class="bg-red-light hover:bg-red text-white font-semibold hover:text-white py-1 px-3 border border-red-light hover:border-transparent rounded"
@@ -85,7 +108,7 @@
             </div>
             <button
               class="bg-blue-light hover:bg-blue text-white font-semibold hover:text-white py-2 px-4 border border-blue-light hover:border-transparent rounded"
-              @click.prevent="toggleForm">
+              @click.prevent="toggleScenarioForm">
               Add Scenario
             </button>
           </div>
@@ -100,52 +123,28 @@
 
 <script>
 import Panel from 'components/Panel'
+import FeatureForm from 'components/FeatureForm'
 import ScenarioForm from 'components/ScenarioForm'
 export default {
   name: 'Cases',
   components: {
+    FeatureForm,
     Panel,
     ScenarioForm
   },
   data() {
     return {
-      // squadOpts: [
-      //   {
-      //     id: 0,
-      //     description: 'CSI',
-      //     features: [
-      //       {
-      //         id: 0,
-      //         description: 'Fitur 1',
-      //       },
-      //       {
-      //         id: 1,
-      //         description: 'Fitur 2',
-      //       },
-      //     ]
-      //   },
-      //   {
-      //     id: 1,
-      //     description: 'WoW',
-      //   },
-      // ],
       squad: '',
       feature: '',
       selectedFeature: null,
       showScenario: null,
-      isForm: false,
+      isScenarioForm: false,
+      isFeatureForm: false,
       scenarioToEdit: null,
-      // scenarioName: '',
-      // scenarioSteps: [{
-      //   value: '',
-      // }],
+      featureToEdit: null,
     }
   },
   computed: {
-    // featureOpts() {
-    //   if (this.squad === '') return []
-    //   return this.squadOpts.find(item => item.id === 0).features
-    // },
     squads() {
       return this.$store.state.data.squads
     },
@@ -171,13 +170,17 @@ export default {
       if (!e.isTrusted) return;
       this.$store.dispatch('getFeatures', this.squad)
       this.feature = ''
-      this.isForm = false
+      this.isScenarioForm = false
     },
     selectFeature(e) {
       if (!e.isTrusted) return;
       this.selectedFeature = this.features.find(item => item.id === this.feature)
       this.$store.dispatch('getScenarios', this.feature)
-      this.isForm = false
+      this.isScenarioForm = false
+    },
+    editFeature(item) {
+      this.featureToEdit = item
+      this.toggleFeatureForm()
     },
     deleteFeature(id) {
       this.$store.dispatch('deleteFeature', id)
@@ -200,13 +203,20 @@ export default {
     },
     editScenario(item) {
       this.scenarioToEdit = item
-      this.toggleForm()
+      this.toggleScenarioForm()
     },
-    toggleForm() {
-      if (this.isForm) {
+    toggleScenarioForm() {
+      if (this.isScenarioForm) {
         this.scenarioToEdit = null
       }
-      this.isForm = !this.isForm
+      this.isScenarioForm = !this.isScenarioForm
+    },
+    toggleFeatureForm() {
+      if (this.isFeatureForm) {
+        this.featureToEdit = null
+      }
+      this.isFeatureForm = !this.isFeatureForm
+      this.$store.dispatch('getFeatures', this.squad)
     },
     // addStep() {
     //   this.scenarioSteps.push({ value: '' })

@@ -84,6 +84,40 @@ export const dataActions = {
 				commit(TOGGLE_ALERT, { show: true, message: err.response.data.message })
 			})
 	},
+	createFeature({ commit }, payload) {
+		const bodyData = {
+			title: payload.title,
+		}
+		const endpoint = URL.features.replace('[ID]', payload.id)
+		return new Promise((resolve, reject) => {
+			axios.post(endpoint, bodyData, axiosConfigAuth())
+				.then(res => {
+					// commit(TOGGLE_SPINNER, false)
+					resolve(true)
+				})
+				.catch(err => {
+					commit(TOGGLE_SPINNER, false)
+					commit(TOGGLE_ALERT, { show: true, message: err.response.data.message })
+				})
+		})
+	},
+	editFeature({ commit }, payload) {
+		const bodyData = {
+			title: payload.title,
+		}
+		const endpoint = URL.feature.replace('[ID]', payload.id)
+		return new Promise((resolve, reject) => {
+			axios.put(endpoint, bodyData, axiosConfigAuth())
+				.then(res => {
+					// commit(TOGGLE_SPINNER, false)
+					resolve(true)
+				})
+				.catch(err => {
+					commit(TOGGLE_SPINNER, false)
+					commit(TOGGLE_ALERT, { show: true, message: err.response.data.message })
+				})
+		})
+	},
 	deleteFeature({ commit }, payload) {
 		const endpoint = URL.feature.replace('[ID]', payload)
 		return new Promise((resolve, reject) => {
