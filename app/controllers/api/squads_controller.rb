@@ -67,6 +67,8 @@ class Api::SquadsController < ApiController
         report = feature.last_report
         if report
           data[report.state.to_sym] += 1
+        else
+          data['pending'] += 1
         end
       end
       json_response(data)
