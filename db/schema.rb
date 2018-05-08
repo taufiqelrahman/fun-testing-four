@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_07_105915) do
+ActiveRecord::Schema.define(version: 2018_05_08_032158) do
 
   create_table "features", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
@@ -27,6 +27,43 @@ ActiveRecord::Schema.define(version: 2018_05_07_105915) do
     t.boolean "active"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "report_features", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "feature_id"
+    t.string "state", default: "pending"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.index ["feature_id", "deleted_at"], name: "index_report_features_on_feature_id_and_deleted_at"
+    t.index ["id", "deleted_at"], name: "index_report_features_on_id_and_deleted_at"
+  end
+
+  create_table "report_scenarios", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "report_feature_id"
+    t.integer "scenario_id"
+    t.string "state", default: "pending"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.index ["id", "deleted_at"], name: "index_report_scenarios_on_id_and_deleted_at"
+    t.index ["report_feature_id", "deleted_at"], name: "index_report_scenarios_on_report_feature_id_and_deleted_at"
+    t.index ["scenario_id", "deleted_at"], name: "index_report_scenarios_on_scenario_id_and_deleted_at"
+  end
+
+  create_table "report_steps", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "report_scenario_id"
+    t.integer "step_id"
+    t.string "state", default: "pending"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.index ["id", "deleted_at"], name: "index_report_steps_on_id_and_deleted_at"
+    t.index ["report_scenario_id", "deleted_at"], name: "index_report_steps_on_report_scenario_id_and_deleted_at"
+    t.index ["step_id", "deleted_at"], name: "index_report_steps_on_step_id_and_deleted_at"
   end
 
   create_table "scenarios", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
