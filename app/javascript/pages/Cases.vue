@@ -47,7 +47,7 @@
           :scenario="scenarioToEdit"
           :featureId="selectedFeature.id"/>
         <feature-form
-          v-if="isFeatureForm"
+          v-else-if="isFeatureForm"
           @toggleForm="toggleFeatureForm"
           :feature="featureToEdit"
           :squadId="squad"/>

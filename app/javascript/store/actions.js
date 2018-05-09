@@ -33,6 +33,7 @@ export const uiActions = {
 				const user = res.data.user
 				const token = res.data.authentication_token
 				setToStorage('access_token', token)
+				commit(SET_USER, user)
 				commit(SET_TOKEN, token)
 				commit(LOG_IN)
 				router.push('/')
